@@ -1,0 +1,926 @@
+"use client";
+
+import { ChangeEvent, FormEvent, ReactNode, useMemo, useState } from "react";
+
+interface FormState {
+  name: string;
+  email: string;
+  message: string;
+}
+
+interface ServiceCard {
+  title: string;
+  desc: string;
+  href: string;
+  cta: string;
+  icon: string;
+}
+
+interface OfficeLocation {
+  name: string;
+  addressLine1: string;
+  addressLine2: string;
+  phoneDisplay: string;
+  phoneHref: string;
+}
+
+function LionMark(): ReactNode {
+  return (
+    <svg
+      width="36"
+      height="36"
+      viewBox="0 0 64 64"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      <circle cx="32" cy="32" r="24" stroke="#d4af37" strokeWidth="2.5" />
+      <path
+        d="M22 27C22 20.8 26.8 16 33 16C39.2 16 44 20.8 44 27V29.5C44 36.4 38.4 42 31.5 42H29C25.1 42 22 38.9 22 35V27Z"
+        stroke="#d4af37"
+        strokeWidth="2.5"
+      />
+    </svg>
+  );
+}
+
+export default function Home() {
+  const [isSpanish, setIsSpanish] = useState<boolean>(false);
+  const [form, setForm] = useState<FormState>({
+    name: "",
+    email: "",
+    message: "",
+  });
+
+  const content = useMemo(() => {
+    const serviceCards: ServiceCard[] = isSpanish
+      ? [
+          {
+            title: "Accidentes de Auto",
+            desc: "Conozca cómo buscamos compensación por lesiones, tratamiento médico y salarios perdidos después de un accidente.",
+            href: "/auto-accidents",
+            cta: "Obtenga ayuda »",
+            icon: "🚗",
+          },
+          {
+            title: "Compensación Laboral",
+            desc: "Obtenga ayuda para asegurar beneficios salariales, atención médica y protección después de una lesión laboral.",
+            href: "/workers-compensation",
+            cta: "Obtenga ayuda »",
+            icon: "🛠️",
+          },
+          {
+            title: "Defensa Criminal / Tránsito",
+            desc: "Defensa para DUI/DWI y ofensas de tránsito.",
+            href: "/criminal-traffic-defense",
+            cta: "Obtenga ayuda »",
+            icon: "⚖️",
+          },
+          {
+            title: "Divorcio / Violencia Doméstica",
+            desc: "Ayuda con divorcio, custodia, pensión alimenticia y órdenes de protección.",
+            href: "/divorce-domestic-violence",
+            cta: "Obtenga ayuda »",
+            icon: "🏛️",
+          },
+        ]
+      : [
+          {
+            title: "Auto Accidents",
+            desc: "Learn how we pursue compensation for injuries, treatment, and lost wages after a crash.",
+            href: "/auto-accidents",
+            cta: "Get auto accident help »",
+            icon: "🚗",
+          },
+          {
+            title: "Workers' Compensation",
+            desc: "Get help securing wage benefits, medical care, and protection after a workplace injury.",
+            href: "/workers-compensation",
+            cta: "Get workers' comp help »",
+            icon: "🛠️",
+          },
+          {
+            title: "Criminal / Traffic Defense",
+            desc: "Defense for DUI/DWI and traffic offenses.",
+            href: "/criminal-traffic-defense",
+            cta: "Get defense help »",
+            icon: "⚖️",
+          },
+          {
+            title: "Divorce / Domestic Violence",
+            desc: "Get help with divorce, child custody, alimony, and protective orders.",
+            href: "/divorce-domestic-violence",
+            cta: "Get family law help »",
+            icon: "🏛️",
+          },
+        ];
+
+    const officeLocations: OfficeLocation[] = [
+      {
+        name: isSpanish ? "Oficina de Rockville" : "Rockville Office",
+        addressLine1: "966 Hungerford Drive, Suite 1",
+        addressLine2: "Rockville, Maryland 20850",
+        phoneDisplay: "(301) 424-4300",
+        phoneHref: "13014244300",
+      },
+      {
+        name: isSpanish ? "Oficina de Wheaton" : "Wheaton Office",
+        addressLine1: "2311 University Blvd. West, Suite 3",
+        addressLine2: "Wheaton, Maryland 20902",
+        phoneDisplay: "(301) 900-1234",
+        phoneHref: "13019001234",
+      },
+    ];
+
+    return {
+      navServices: isSpanish ? "Áreas de Práctica" : "Practice Areas",
+      navAbout: isSpanish ? "Nuestra Firma" : "Our Firm",
+      navContact: isSpanish ? "Contacto" : "Contact",
+      navLocations: isSpanish ? "Ubicaciones" : "Locations",
+      toggle: isSpanish ? "In English" : "En Español",
+      consultButton: isSpanish ? "Solicitar Consulta" : "Request Consultation",
+
+      heroTopLine1: isSpanish ? "LAS OFICINAS DEL ABOGADO," : "LAW OFFICE OF",
+      heroTopLine2: "LUIS LEON, ESQ.",
+      heroCenterLine: isSpanish
+        ? "TE DEFENDEMOS CON GARRAS"
+        : "WE FIGHT FOR YOU",
+      experience: isSpanish
+        ? "MÁS DE 35 AÑOS DE EXPERIENCIA"
+        : "OVER 35 YEARS OF EXPERIENCE",
+      licensedLine1: isSpanish ? "LICENCIADO EN MARYLAND Y" : "LICENSED IN MARYLAND &",
+      licensedLine2: "WASHINGTON, D.C.",
+      hablaEspanol: "HABLAMOS ESPAÑOL",
+      phoneDisplay: "(301) 900-1234",
+      phoneHref: "13019001234",
+
+      servicesTitle: isSpanish ? "Áreas de Práctica" : "Practice Areas",
+      servicesIntro: isSpanish
+        ? "Seleccione el tipo de caso que mejor se adapte a sus necesidades legales. Cada categoría conduce a una página dedicada con más información sobre cómo nuestra firma puede ayudar."
+        : "Select the case type that best matches your legal needs. Each category leads to a dedicated page with more information about how our firm can help.",
+      serviceCards,
+
+      aboutTitle: isSpanish ? "Nuestra Firma" : "Our Firm",
+      attorneyName: "Luis U. Leon, Esq.",
+      aboutBody1: isSpanish
+        ? "En las Oficinas del Abogado, Luis U. Leon, Esq., estamos comprometidos a brindar representación legal excepcional con un toque personal. Entendemos que elegir al abogado correcto es una decisión importante, y nos sentimos honrados por la oportunidad de representarle."
+        : "At the Law Office of Luis U. Leon, Esq., we are committed to providing exceptional legal representation with a personal touch. We understand that choosing the right attorney is an important decision, and we are honored by the opportunity to represent you.",
+      aboutBody2: isSpanish
+        ? "Nuestra firma se enorgullece de ofrecer servicios legales de alta calidad mientras se asegura de que cada cliente se sienta informado, respetado y apoyado durante todo su caso. Somos completamente bilingües en inglés y español, lo que nos permite servir a una comunidad diversa con claridad y confianza."
+        : "Our firm takes great pride in delivering high-quality legal services while ensuring every client feels informed, respected, and supported throughout their case. We are fully bilingual in English and Spanish, allowing us to serve a diverse community with clarity and confidence.",
+      aboutBody3: isSpanish
+        ? "Lo más importante es que usted siempre tiene el control de su caso. Nunca aceptaremos un acuerdo sin su aprobación. A diferencia de algunos bufetes, no tomamos decisiones en su nombre ni simplemente le presentamos un cheque final; trabajamos con usted en cada paso del camino para asegurar el mejor resultado posible."
+        : "Most importantly, you are always in control of your case. We will never accept a settlement without your approval. Unlike some firms, we do not make decisions on your behalf and simply present you with a final check—we work with you every step of the way to ensure the best possible outcome.",
+
+      contactTitle: isSpanish ? "Contáctenos" : "Contact Us",
+      namePlaceholder: isSpanish ? "Su Nombre" : "Your Name",
+      emailPlaceholder: isSpanish ? "Su Correo Electrónico" : "Your Email",
+      messagePlaceholder: isSpanish
+        ? "¿Cómo podemos ayudarle?"
+        : "How can we help you?",
+      sendMessage: isSpanish ? "Enviar Mensaje" : "Send Message",
+
+      locationsTitle: isSpanish ? "Ubicaciones de Oficinas" : "Office Locations",
+      officeLocations,
+    };
+  }, [isSpanish]);
+
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const subject = encodeURIComponent(
+      isSpanish ? "Nueva Solicitud de Consulta" : "New Consultation Request"
+    );
+    const body = encodeURIComponent(
+      `${isSpanish ? "Nombre" : "Name"}: ${form.name}\n${
+        isSpanish ? "Correo Electrónico" : "Email"
+      }: ${form.email}\n\n${isSpanish ? "Mensaje" : "Message"}:\n${form.message}`
+    );
+
+    window.location.href = `mailto:info@luisleonlaw.com?subject=${subject}&body=${body}`;
+  };
+
+  return (
+    <main
+      style={{
+        minHeight: "100vh",
+        background: "#0b0b0b",
+        color: "#f5f1e8",
+        fontFamily: 'Georgia, "Times New Roman", serif',
+      }}
+    >
+      <header
+        style={{
+          position: "sticky",
+          top: 0,
+          zIndex: 100,
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          gap: "24px",
+          padding: "18px 40px",
+          background: "rgba(10, 10, 10, 0.94)",
+          backdropFilter: "blur(8px)",
+          borderBottom: "1px solid rgba(212, 175, 55, 0.18)",
+          flexWrap: "wrap",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            width: "44px",
+            height: "44px",
+          }}
+          aria-label="Lion logo"
+          title="Lion logo"
+        >
+          <LionMark />
+        </div>
+
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "24px",
+            flexWrap: "wrap",
+          }}
+        >
+          <nav
+            style={{
+              display: "flex",
+              gap: "18px",
+              flexWrap: "wrap",
+            }}
+          >
+            <a href="#services" style={{ color: "#d7d2c8", textDecoration: "none" }}>
+              {content.navServices}
+            </a>
+            <a href="#about" style={{ color: "#d7d2c8", textDecoration: "none" }}>
+              {content.navAbout}
+            </a>
+            <a href="#contact" style={{ color: "#d7d2c8", textDecoration: "none" }}>
+              {content.navContact}
+            </a>
+            <a href="#locations" style={{ color: "#d7d2c8", textDecoration: "none" }}>
+              {content.navLocations}
+            </a>
+          </nav>
+
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "12px",
+              flexWrap: "wrap",
+            }}
+          >
+            <a
+              href="#contact"
+              style={{
+                background: "#d4af37",
+                color: "#111",
+                textDecoration: "none",
+                border: "none",
+                fontWeight: 700,
+                padding: "12px 20px",
+                borderRadius: "8px",
+                cursor: "pointer",
+              }}
+            >
+              {content.consultButton}
+            </a>
+
+            <button
+              type="button"
+              onClick={() => setIsSpanish((prev) => !prev)}
+              style={{
+                background: "transparent",
+                color: "#d4af37",
+                border: "1px solid #d4af37",
+                padding: "11px 16px",
+                borderRadius: "8px",
+                fontWeight: 700,
+                cursor: "pointer",
+              }}
+            >
+              {content.toggle}
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <section
+        style={{
+          position: "relative",
+          minHeight: "88vh",
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr 1fr",
+          backgroundImage: "url('/courtroom-hero.png')",
+          backgroundSize: "cover",
+          backgroundPosition: "center top",
+          overflow: "hidden",
+        }}
+      >
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background: "rgba(0,0,0,0.25)",
+          }}
+        />
+
+        <div
+          style={{
+            position: "absolute",
+            top: "26px",
+            left: 0,
+            width: "100%",
+            textAlign: "center",
+            zIndex: 2,
+            padding: "0 20px",
+          }}
+        >
+          {isSpanish ? (
+            <>
+              <h1
+                style={{
+                  margin: 0,
+                  color: "#d4af37",
+                  fontSize: "clamp(2rem, 4vw, 3.4rem)",
+                  lineHeight: 1.02,
+                  textShadow: "0 4px 22px rgba(0,0,0,0.45)",
+                  letterSpacing: "0.02em",
+                }}
+              >
+                {content.heroTopLine1}
+              </h1>
+              <h1
+                style={{
+                  margin: "4px 0 0 0",
+                  color: "#d4af37",
+                  fontSize: "clamp(3.2rem, 6.8vw, 5.8rem)",
+                  lineHeight: 1.02,
+                  textShadow: "0 4px 22px rgba(0,0,0,0.45)",
+                  letterSpacing: "0.02em",
+                }}
+              >
+                {content.heroTopLine2}
+              </h1>
+            </>
+          ) : (
+            <h1
+              style={{
+                margin: 0,
+                color: "#d4af37",
+                fontSize: "clamp(3.2rem, 6.8vw, 5.8rem)",
+                lineHeight: 1.02,
+                textShadow: "0 4px 22px rgba(0,0,0,0.45)",
+                letterSpacing: "0.02em",
+              }}
+            >
+              {content.heroTopLine1}
+              <br />
+              {content.heroTopLine2}
+            </h1>
+          )}
+        </div>
+
+        <div
+          style={{
+            position: "relative",
+            zIndex: 2,
+            alignSelf: "end",
+            justifySelf: "center",
+            textAlign: "center",
+            paddingLeft: "18px",
+            paddingRight: "18px",
+            paddingBottom: "96px",
+            maxWidth: "360px",
+          }}
+        >
+          <p
+            style={{
+              margin: 0,
+              fontSize: "clamp(1.5rem, 2.3vw, 2rem)",
+              fontWeight: 700,
+              color: "#ffffff",
+              textTransform: "uppercase",
+              lineHeight: 1.25,
+              textShadow: "0 2px 16px rgba(0,0,0,0.55)",
+            }}
+          >
+            {content.experience}
+          </p>
+
+          <p
+            style={{
+              marginTop: "12px",
+              fontSize: "clamp(1.35rem, 2vw, 1.75rem)",
+              fontWeight: 700,
+              color: "#d4af37",
+              textTransform: "uppercase",
+              lineHeight: 1.25,
+              textShadow: "0 2px 16px rgba(0,0,0,0.55)",
+            }}
+          >
+            {content.hablaEspanol}
+          </p>
+        </div>
+
+        <div
+          style={{
+            position: "relative",
+            zIndex: 2,
+            alignSelf: "end",
+            justifySelf: "center",
+            textAlign: "center",
+            paddingBottom: "96px",
+            paddingLeft: "16px",
+            paddingRight: "16px",
+          }}
+        >
+          <h2
+            style={{
+              margin: 0,
+              color: "#ffffff",
+              fontSize: "clamp(2.8rem, 5vw, 4.2rem)",
+              lineHeight: 1.04,
+              textShadow: "0 4px 22px rgba(0,0,0,0.45)",
+              letterSpacing: "0.04em",
+            }}
+          >
+            {content.heroCenterLine}
+          </h2>
+
+          <a
+            href={`tel:${content.phoneHref}`}
+            style={{
+              display: "block",
+              marginTop: "24px",
+              color: "#d4af37",
+              textDecoration: "none",
+              fontSize: "clamp(2.1rem, 4.2vw, 3.1rem)",
+              fontWeight: 700,
+              textShadow: "0 2px 16px rgba(0,0,0,0.55)",
+            }}
+          >
+            {content.phoneDisplay}
+          </a>
+
+          <a
+            href="#contact"
+            style={{
+              display: "inline-block",
+              marginTop: "18px",
+              background: "#d4af37",
+              color: "#111",
+              textDecoration: "none",
+              fontWeight: 700,
+              fontSize: "clamp(1.4rem, 2.8vw, 2rem)",
+              padding: "14px 28px",
+              borderRadius: "8px",
+              lineHeight: 1.1,
+            }}
+          >
+            {content.consultButton}
+          </a>
+        </div>
+
+        <div
+          style={{
+            position: "relative",
+            zIndex: 2,
+            alignSelf: "end",
+            justifySelf: "center",
+            textAlign: "center",
+            paddingLeft: "18px",
+            paddingRight: "18px",
+            paddingBottom: "96px",
+            maxWidth: "420px",
+          }}
+        >
+          <div
+            style={{
+              display: "inline-block",
+              textAlign: "center",
+            }}
+          >
+            <p
+              style={{
+                margin: 0,
+                fontSize: "clamp(1.45rem, 2.2vw, 1.95rem)",
+                fontWeight: 700,
+                color: "#ffffff",
+                lineHeight: 1.25,
+                textTransform: "uppercase",
+                textShadow: "0 2px 16px rgba(0,0,0,0.55)",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {content.licensedLine1}
+            </p>
+            <p
+              style={{
+                margin: "4px 0 0 0",
+                fontSize: "clamp(1.45rem, 2.2vw, 1.95rem)",
+                fontWeight: 700,
+                color: "#ffffff",
+                lineHeight: 1.25,
+                textTransform: "uppercase",
+                textShadow: "0 2px 16px rgba(0,0,0,0.55)",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {content.licensedLine2}
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="services"
+        style={{
+          padding: "88px 20px",
+        }}
+      >
+        <div
+          style={{
+            maxWidth: "1180px",
+            margin: "0 auto",
+          }}
+        >
+          <h2
+            style={{
+              margin: "0 0 18px",
+              fontSize: "clamp(2rem, 4vw, 3.2rem)",
+              color: "#d4af37",
+              textAlign: "center",
+            }}
+          >
+            {content.servicesTitle}
+          </h2>
+
+          <p
+            style={{
+              maxWidth: "960px",
+              margin: "0 auto 48px",
+              color: "#cbc3b7",
+              fontSize: "1.1rem",
+              lineHeight: 1.7,
+              textAlign: "center",
+            }}
+          >
+            {content.servicesIntro}
+          </p>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(2, minmax(280px, 1fr))",
+              gap: "28px",
+            }}
+          >
+            {content.serviceCards.map((card) => (
+              <a
+                key={card.href}
+                href={card.href}
+                style={{
+                  display: "flex",
+                  gap: "18px",
+                  alignItems: "flex-start",
+                  textDecoration: "none",
+                  color: "inherit",
+                  background: "linear-gradient(180deg, #151515, #101010)",
+                  border: "1px solid rgba(212, 175, 55, 0.14)",
+                  borderRadius: "18px",
+                  padding: "28px",
+                  boxShadow: "0 10px 30px rgba(0, 0, 0, 0.28)",
+                }}
+              >
+                <div
+                  style={{
+                    flex: "0 0 78px",
+                    width: "78px",
+                    height: "78px",
+                    display: "grid",
+                    placeItems: "center",
+                    borderRadius: "999px",
+                    background: "rgba(212, 175, 55, 0.08)",
+                    fontSize: "2rem",
+                  }}
+                >
+                  {card.icon}
+                </div>
+
+                <div>
+                  <h3
+                    style={{
+                      margin: "0 0 10px",
+                      color: "#d4af37",
+                      fontSize: "1.45rem",
+                    }}
+                  >
+                    {card.title}
+                  </h3>
+
+                  <p
+                    style={{
+                      margin: 0,
+                      color: "#c3bdb2",
+                      lineHeight: 1.65,
+                      fontSize: "1rem",
+                    }}
+                  >
+                    {card.desc}
+                  </p>
+
+                  <span
+                    style={{
+                      display: "inline-block",
+                      marginTop: "16px",
+                      color: "#d4af37",
+                      fontWeight: 700,
+                    }}
+                  >
+                    {card.cta}
+                  </span>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="about"
+        style={{
+          padding: "88px 20px",
+          background: "#111111",
+        }}
+      >
+        <div
+          style={{
+            maxWidth: "900px",
+            margin: "0 auto",
+            textAlign: "center",
+          }}
+        >
+          <h2
+            style={{
+              margin: "0 0 18px",
+              fontSize: "clamp(2rem, 4vw, 3.2rem)",
+              color: "#d4af37",
+              textAlign: "center",
+            }}
+          >
+            {content.aboutTitle}
+          </h2>
+
+          <h3
+            style={{
+              color: "#f5f1e8",
+              fontSize: "1.8rem",
+              marginBottom: "18px",
+            }}
+          >
+            {content.attorneyName}
+          </h3>
+
+          <p
+            style={{
+              color: "#cbc3b7",
+              fontSize: "1.1rem",
+              lineHeight: 1.8,
+              marginBottom: "18px",
+            }}
+          >
+            {content.aboutBody1}
+          </p>
+
+          <p
+            style={{
+              color: "#cbc3b7",
+              fontSize: "1.1rem",
+              lineHeight: 1.8,
+              marginBottom: "18px",
+            }}
+          >
+            {content.aboutBody2}
+          </p>
+
+          <p
+            style={{
+              color: "#cbc3b7",
+              fontSize: "1.1rem",
+              lineHeight: 1.8,
+            }}
+          >
+            {content.aboutBody3}
+          </p>
+        </div>
+      </section>
+
+      <section
+        id="contact"
+        style={{
+          padding: "88px 20px",
+        }}
+      >
+        <div
+          style={{
+            maxWidth: "760px",
+            margin: "0 auto",
+            textAlign: "center",
+          }}
+        >
+          <h2
+            style={{
+              margin: "0 0 18px",
+              fontSize: "clamp(2rem, 4vw, 3.2rem)",
+              color: "#d4af37",
+              textAlign: "center",
+            }}
+          >
+            {content.contactTitle}
+          </h2>
+
+          <form
+            onSubmit={handleSubmit}
+            style={{
+              marginTop: "24px",
+              display: "grid",
+              gap: "14px",
+            }}
+          >
+            <input
+              name="name"
+              placeholder={content.namePlaceholder}
+              value={form.name}
+              onChange={handleChange}
+              required
+              style={{
+                width: "100%",
+                background: "#161616",
+                color: "#f5f1e8",
+                border: "1px solid rgba(212, 175, 55, 0.16)",
+                borderRadius: "10px",
+                padding: "14px 16px",
+                font: "inherit",
+              }}
+            />
+
+            <input
+              name="email"
+              type="email"
+              placeholder={content.emailPlaceholder}
+              value={form.email}
+              onChange={handleChange}
+              required
+              style={{
+                width: "100%",
+                background: "#161616",
+                color: "#f5f1e8",
+                border: "1px solid rgba(212, 175, 55, 0.16)",
+                borderRadius: "10px",
+                padding: "14px 16px",
+                font: "inherit",
+              }}
+            />
+
+            <textarea
+              name="message"
+              placeholder={content.messagePlaceholder}
+              rows={6}
+              value={form.message}
+              onChange={handleChange}
+              required
+              style={{
+                width: "100%",
+                background: "#161616",
+                color: "#f5f1e8",
+                border: "1px solid rgba(212, 175, 55, 0.16)",
+                borderRadius: "10px",
+                padding: "14px 16px",
+                font: "inherit",
+                resize: "vertical",
+                minHeight: "150px",
+              }}
+            />
+
+            <button
+              type="submit"
+              style={{
+                background: "#d4af37",
+                color: "#111",
+                border: "none",
+                fontWeight: 700,
+                padding: "12px 20px",
+                borderRadius: "8px",
+                cursor: "pointer",
+              }}
+            >
+              {content.sendMessage}
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <section
+        id="locations"
+        style={{
+          padding: "88px 20px 96px",
+          background: "#111111",
+          borderTop: "1px solid rgba(212, 175, 55, 0.12)",
+        }}
+      >
+        <div
+          style={{
+            maxWidth: "1180px",
+            margin: "0 auto",
+          }}
+        >
+          <h2
+            style={{
+              margin: "0 0 32px",
+              fontSize: "clamp(2rem, 4vw, 3.2rem)",
+              color: "#d4af37",
+              textAlign: "center",
+            }}
+          >
+            {content.locationsTitle}
+          </h2>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+              gap: "28px",
+            }}
+          >
+            {content.officeLocations.map((office) => (
+              <div
+                key={office.name}
+                style={{
+                  background: "linear-gradient(180deg, #151515, #101010)",
+                  border: "1px solid rgba(212, 175, 55, 0.14)",
+                  borderRadius: "18px",
+                  padding: "28px",
+                  boxShadow: "0 10px 30px rgba(0, 0, 0, 0.28)",
+                  textAlign: "center",
+                }}
+              >
+                <h3
+                  style={{
+                    margin: "0 0 14px",
+                    color: "#d4af37",
+                    fontSize: "1.45rem",
+                  }}
+                >
+                  {office.name}
+                </h3>
+
+                <p
+                  style={{
+                    margin: "0 0 10px",
+                    color: "#cbc3b7",
+                    lineHeight: 1.7,
+                    fontSize: "1.05rem",
+                  }}
+                >
+                  {office.addressLine1}
+                  <br />
+                  {office.addressLine2}
+                </p>
+
+                <a
+                  href={`tel:${office.phoneHref}`}
+                  style={{
+                    color: "#d4af37",
+                    textDecoration: "none",
+                    fontWeight: 700,
+                    fontSize: "1.08rem",
+                  }}
+                >
+                  {office.phoneDisplay}
+                </a>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    </main>
+  );
+}

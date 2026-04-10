@@ -1,0 +1,196 @@
+"use client";
+
+import { ChangeEvent, FormEvent, ReactNode, useMemo, useState } from "react";
+
+interface FormState {
+  name: string;
+  email: string;
+  message: string;
+}
+
+function LionMark(): ReactNode {
+  return (
+    <svg width="36" height="36" viewBox="0 0 64 64" fill="none">
+      <circle cx="32" cy="32" r="24" stroke="#d4af37" strokeWidth="2.5" />
+      <path
+        d="M22 27C22 20.8 26.8 16 33 16C39.2 16 44 20.8 44 27V29.5C44 36.4 38.4 42 31.5 42H29C25.1 42 22 38.9 22 35V27Z"
+        stroke="#d4af37"
+        strokeWidth="2.5"
+      />
+    </svg>
+  );
+}
+
+export default function Home() {
+  const content = useMemo(() => ({
+    heroTopLine: "LAW OFFICE OF LUIS LEON, ESQ.",
+    heroBottomLine: "WE FIGHT FOR YOU",
+    experience: "Over 35 years of experience",
+    licensedLine1: "LICENSED IN MARYLAND &",
+    licensedLine2: "WASHINGTON, D.C.",
+    hablaEspanol: "Hablamos Español",
+    phoneDisplay: "(301) 900-1234",
+    phoneHref: "13019001234",
+  }), []);
+
+  return (
+    <main
+      style={{
+        minHeight: "100vh",
+        background: "#0b0b0b",
+        color: "#f5f1e8",
+        fontFamily: 'Georgia, "Times New Roman", serif',
+      }}
+    >
+      {/* HEADER */}
+      <header
+        style={{
+          position: "sticky",
+          top: 0,
+          display: "flex",
+          justifyContent: "space-between",
+          padding: "20px 40px",
+          background: "#0b0b0b",
+          zIndex: 10,
+        }}
+      >
+        <LionMark />
+
+        <nav style={{ display: "flex", gap: "20px" }}>
+          <a href="#services">Practice Areas</a>
+          <a href="#about">Our Firm</a>
+          <a href="#contact">Contact</a>
+          <a href="#locations">Locations</a>
+        </nav>
+      </header>
+
+      {/* HERO */}
+      <section
+        style={{
+          position: "relative",
+          minHeight: "85vh",
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr 1fr",
+          backgroundImage: "url('/courtroom-hero.png')",
+          backgroundSize: "cover",
+          backgroundPosition: "center top",
+        }}
+      >
+        {/* OVERLAY */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background: "rgba(0,0,0,0.25)",
+          }}
+        />
+
+        {/* TOP TITLE */}
+        <div
+          style={{
+            position: "absolute",
+            top: "30px",
+            width: "100%",
+            textAlign: "center",
+            zIndex: 2,
+          }}
+        >
+          <h1
+            style={{
+              color: "#d4af37",
+              fontSize: "clamp(2.5rem,5vw,4rem)",
+              margin: 0,
+            }}
+          >
+            {content.heroTopLine}
+          </h1>
+        </div>
+
+        {/* LEFT (UNDER LION) */}
+        <div
+          style={{
+            position: "relative",
+            zIndex: 2,
+            alignSelf: "end",
+            textAlign: "center",
+            paddingBottom: "60px",
+          }}
+        >
+          <p style={{ fontSize: "1.6rem", fontWeight: 700 }}>
+            {content.experience}
+          </p>
+
+          <p
+            style={{
+              color: "#d4af37",
+              fontWeight: 700,
+              marginTop: "10px",
+            }}
+          >
+            {content.hablaEspanol}
+          </p>
+        </div>
+
+        {/* CENTER */}
+        <div
+          style={{
+            position: "relative",
+            zIndex: 2,
+            textAlign: "center",
+            alignSelf: "center",
+          }}
+        >
+          <a
+            href={`tel:${content.phoneHref}`}
+            style={{
+              fontSize: "2.4rem", // 🔥 bigger phone
+              fontWeight: 700,
+              color: "#d4af37",
+              textDecoration: "none",
+            }}
+          >
+            {content.phoneDisplay}
+          </a>
+        </div>
+
+        {/* RIGHT (UNDER PERSON) */}
+        <div
+          style={{
+            position: "relative",
+            zIndex: 2,
+            alignSelf: "end",
+            textAlign: "center",
+            paddingBottom: "60px",
+          }}
+        >
+          <p style={{ fontSize: "1.5rem", fontWeight: 700 }}>
+            {content.licensedLine1}
+            <br />
+            {content.licensedLine2}
+          </p>
+        </div>
+
+        {/* BOTTOM TEXT */}
+        <div
+          style={{
+            position: "absolute",
+            bottom: "25px",
+            width: "100%",
+            textAlign: "center",
+            zIndex: 2,
+          }}
+        >
+          <h2
+            style={{
+              color: "#ffffff",
+              fontSize: "clamp(2rem,4vw,3rem)",
+              margin: 0,
+            }}
+          >
+            {content.heroBottomLine}
+          </h2>
+        </div>
+      </section>
+    </main>
+  );
+}
