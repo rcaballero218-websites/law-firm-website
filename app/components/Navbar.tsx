@@ -53,8 +53,11 @@ export default function Navbar({
         .desktopNav {
           display: flex;
           align-items: center;
-          gap: 18px;
-          flex-wrap: wrap;
+          justify-content: flex-end;
+          gap: 34px;
+          flex: 1;
+          margin-left: auto;
+          padding-left: 24px;
         }
 
         .navLink {
@@ -62,6 +65,8 @@ export default function Navbar({
           text-decoration: none;
           white-space: nowrap;
           font-weight: 500;
+          font-size: 18px;
+          letter-spacing: 0.2px;
         }
 
         .navLink:hover {
@@ -73,22 +78,6 @@ export default function Navbar({
           align-items: center;
           gap: 12px;
           flex-shrink: 0;
-        }
-
-        .consultButton {
-          background: #d4af37;
-          color: #111;
-          text-decoration: none;
-          border: none;
-          font-weight: 700;
-          padding: 12px 20px;
-          border-radius: 8px;
-          cursor: pointer;
-          white-space: nowrap;
-        }
-
-        .consultButton:hover {
-          opacity: 0.92;
         }
 
         .languageButton {
@@ -134,17 +123,22 @@ export default function Navbar({
           border-radius: 999px;
         }
 
-        .mobileMenu {
-          display: none;
-        }
-
-        @media (max-width: 900px) {
+        @media (max-width: 1100px) {
           .navbar {
             padding: 16px 20px;
           }
 
-          .desktopNav,
-          .consultButton {
+          .desktopNav {
+            gap: 24px;
+          }
+
+          .navLink {
+            font-size: 16px;
+          }
+        }
+
+        @media (max-width: 900px) {
+          .desktopNav {
             display: none;
           }
 
@@ -215,19 +209,6 @@ export default function Navbar({
             color: #d4af37;
             border-color: rgba(212, 175, 55, 0.4);
           }
-
-          .mobileConsultButton {
-            margin-top: 12px;
-            display: block;
-            width: 100%;
-            background: #d4af37;
-            color: #111;
-            text-decoration: none;
-            font-weight: 700;
-            text-align: center;
-            padding: 13px 16px;
-            border-radius: 8px;
-          }
         }
       `}</style>
 
@@ -256,10 +237,6 @@ export default function Navbar({
         </nav>
 
         <div className="rightSide">
-          <Link href="/#contact" className="consultButton">
-            {isSpanish ? "Solicitar Consulta" : "Request Consultation"}
-          </Link>
-
           <button
             type="button"
             onClick={onToggleLanguage}
@@ -299,10 +276,6 @@ export default function Navbar({
                 {isSpanish ? "Ubicaciones" : "Locations"}
               </Link>
             </div>
-
-            <Link href="/#contact" className="mobileConsultButton" onClick={closeMenu}>
-              {isSpanish ? "Solicitar Consulta" : "Request Consultation"}
-            </Link>
           </div>
         )}
       </header>
