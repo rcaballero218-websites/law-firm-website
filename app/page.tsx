@@ -1,7 +1,6 @@
 "use client";
 
 import Navbar from "./components/Navbar";
-
 import { ChangeEvent, FormEvent, useEffect, useMemo, useState } from "react";
 
 interface FormState {
@@ -30,6 +29,12 @@ interface OfficeLocation {
 
 export default function Home() {
   const [isMobile, setIsMobile] = useState(false);
+  const [isSpanish, setIsSpanish] = useState<boolean>(false);
+  const [form, setForm] = useState<FormState>({
+    name: "",
+    email: "",
+    message: "",
+  });
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -37,12 +42,6 @@ export default function Home() {
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
-  const [isSpanish, setIsSpanish] = useState<boolean>(false);
-  const [form, setForm] = useState<FormState>({
-    name: "",
-    email: "",
-    message: "",
-  });
 
   const content = useMemo(() => {
     const serviceCards: ServiceCard[] = isSpanish
@@ -107,26 +106,28 @@ export default function Home() {
           },
         ];
 
-        const officeLocations: OfficeLocation[] = [
-          {
-            name: isSpanish ? "Oficina de Rockville" : "Rockville Office",
-            addressLine1: "966 Hungerford Drive, Suite 1",
-            addressLine2: "Rockville, Maryland 20850",
-            phoneDisplay: "(301) 424-4300",
-            phoneHref: "13014244300",
-            image: "/rockville-office.jpg",
-            mapLink: "https://www.google.com/maps?q=966+Hungerford+Drive+Rockville+MD+20850",
-          },
-          {
-            name: isSpanish ? "Oficina de Wheaton" : "Wheaton Office",
-            addressLine1: "2311 University Blvd. West, Suite 3",
-            addressLine2: "Wheaton, Maryland 20902",
-            phoneDisplay: "(301) 900-1234",
-            phoneHref: "13019001234",
-            image: "/wheaton-office.jpg",
-            mapLink: "https://www.google.com/maps?q=2311+University+Blvd+W+Wheaton+MD+20902",
-          },
-        ];
+    const officeLocations: OfficeLocation[] = [
+      {
+        name: isSpanish ? "Oficina de Rockville" : "Rockville Office",
+        addressLine1: "966 Hungerford Drive, Suite 1",
+        addressLine2: "Rockville, Maryland 20850",
+        phoneDisplay: "(301) 424-4300",
+        phoneHref: "13014244300",
+        image: "/rockville-office.jpg",
+        mapLink:
+          "https://www.google.com/maps?q=966+Hungerford+Drive+Rockville+MD+20850",
+      },
+      {
+        name: isSpanish ? "Oficina de Wheaton" : "Wheaton Office",
+        addressLine1: "2311 University Blvd. West, Suite 3",
+        addressLine2: "Wheaton, Maryland 20902",
+        phoneDisplay: "(301) 900-1234",
+        phoneHref: "13019001234",
+        image: "/wheaton-office.jpg",
+        mapLink:
+          "https://www.google.com/maps?q=2311+University+Blvd+W+Wheaton+MD+20902",
+      },
+    ];
 
     return {
       navServices: isSpanish ? "Áreas de Práctica" : "Practice Areas",
@@ -138,9 +139,7 @@ export default function Home() {
 
       heroTopLine1: isSpanish ? "LAS OFICINAS DEL ABOGADO," : "LAW OFFICE OF",
       heroTopLine2: "LUIS LEON, ESQ.",
-      heroCenterLine: isSpanish
-        ? "TE DEFENDEMOS CON GARRAS"
-        : "WE FIGHT FOR YOU",
+      heroCenterLine: isSpanish ? "TE DEFENDEMOS CON GARRAS" : "WE FIGHT FOR YOU",
       experience: isSpanish
         ? "MÁS DE 35 AÑOS DE EXPERIENCIA"
         : "OVER 35 YEARS OF EXPERIENCE",
@@ -220,54 +219,256 @@ export default function Home() {
         onToggleLanguage={() => setIsSpanish((prev) => !prev)}
       />
 
-      <section
-        style={{
-          position: "relative",
-          minHeight: "88vh",
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr 1fr",
-          backgroundImage: "url('/courtroom-hero.png')",
-          backgroundSize: "cover",
-          backgroundPosition: "center top",
-          overflow: "hidden",
-        }}
-      >
-        <div
+      {isMobile ? (
+        <section
           style={{
-            position: "absolute",
-            inset: 0,
-            background: "rgba(0,0,0,0.25)",
-          }}
-        />
-
-        <div
-          style={{
-            position: "absolute",
-            top: "26px",
-            left: 0,
-            width: "100%",
-            textAlign: "center",
-            zIndex: 2,
-            padding: "0 20px",
+            position: "relative",
+            backgroundImage: "url('/courtroom-hero.png')",
+            backgroundSize: "cover",
+            backgroundPosition: "center top",
+            overflow: "hidden",
+            padding: "28px 18px 40px",
+            minHeight: "auto",
           }}
         >
-          {isSpanish ? (
-            <>
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              background: "rgba(0,0,0,0.45)",
+            }}
+          />
+
+          <div
+            style={{
+              position: "relative",
+              zIndex: 2,
+              maxWidth: "520px",
+              margin: "0 auto",
+              textAlign: "center",
+            }}
+          >
+            {isSpanish ? (
+              <>
+                <h1
+                  style={{
+                    margin: 0,
+                    color: "#d4af37",
+                    fontSize: "clamp(1.45rem, 6.4vw, 2rem)",
+                    lineHeight: 1.05,
+                    textShadow: "0 4px 22px rgba(0,0,0,0.45)",
+                    letterSpacing: "0.02em",
+                  }}
+                >
+                  {content.heroTopLine1}
+                </h1>
+                <h1
+                  style={{
+                    margin: "6px 0 0 0",
+                    color: "#d4af37",
+                    fontSize: "clamp(2.15rem, 10vw, 3.2rem)",
+                    lineHeight: 1.02,
+                    textShadow: "0 4px 22px rgba(0,0,0,0.45)",
+                    letterSpacing: "0.02em",
+                  }}
+                >
+                  {content.heroTopLine2}
+                </h1>
+              </>
+            ) : (
               <h1
                 style={{
                   margin: 0,
                   color: "#d4af37",
-                  fontSize: "clamp(2rem, 4vw, 3.4rem)",
+                  fontSize: "clamp(2rem, 10vw, 3.2rem)",
                   lineHeight: 1.02,
                   textShadow: "0 4px 22px rgba(0,0,0,0.45)",
                   letterSpacing: "0.02em",
                 }}
               >
                 {content.heroTopLine1}
+                <br />
+                {content.heroTopLine2}
               </h1>
+            )}
+
+            <h2
+              style={{
+                margin: "30px 0 0 0",
+                color: "#ffffff",
+                fontSize: "clamp(2rem, 10vw, 3.15rem)",
+                lineHeight: 1.05,
+                textShadow: "0 4px 22px rgba(0,0,0,0.45)",
+                letterSpacing: "0.03em",
+              }}
+            >
+              {content.heroCenterLine}
+            </h2>
+
+            <a
+              href={`tel:${content.phoneHref}`}
+              style={{
+                display: "block",
+                marginTop: "22px",
+                color: "#d4af37",
+                textDecoration: "none",
+                fontSize: "clamp(1.7rem, 8vw, 2.4rem)",
+                fontWeight: 700,
+                textShadow: "0 2px 16px rgba(0,0,0,0.55)",
+              }}
+            >
+              {content.phoneDisplay}
+            </a>
+
+            <a
+              href="#contact"
+              style={{
+                display: "block",
+                width: "100%",
+                marginTop: "18px",
+                background: "#d4af37",
+                color: "#111",
+                textDecoration: "none",
+                fontWeight: 700,
+                fontSize: "1.1rem",
+                padding: "14px 18px",
+                borderRadius: "8px",
+                lineHeight: 1.1,
+                boxSizing: "border-box",
+              }}
+            >
+              {content.consultButton}
+            </a>
+
+            <div
+              style={{
+                marginTop: "28px",
+                display: "grid",
+                gap: "14px",
+              }}
+            >
+              <p
+                style={{
+                  margin: 0,
+                  fontSize: "1rem",
+                  fontWeight: 700,
+                  color: "#ffffff",
+                  textTransform: "uppercase",
+                  lineHeight: 1.35,
+                  textShadow: "0 2px 16px rgba(0,0,0,0.55)",
+                }}
+              >
+                {content.experience}
+              </p>
+
+              <p
+                style={{
+                  margin: 0,
+                  fontSize: "1rem",
+                  fontWeight: 700,
+                  color: "#d4af37",
+                  textTransform: "uppercase",
+                  lineHeight: 1.35,
+                  textShadow: "0 2px 16px rgba(0,0,0,0.55)",
+                }}
+              >
+                {content.hablaEspanol}
+              </p>
+
+              <div>
+                <p
+                  style={{
+                    margin: 0,
+                    fontSize: "1rem",
+                    fontWeight: 700,
+                    color: "#ffffff",
+                    lineHeight: 1.3,
+                    textTransform: "uppercase",
+                    textShadow: "0 2px 16px rgba(0,0,0,0.55)",
+                  }}
+                >
+                  {content.licensedLine1}
+                </p>
+                <p
+                  style={{
+                    margin: "4px 0 0 0",
+                    fontSize: "1rem",
+                    fontWeight: 700,
+                    color: "#ffffff",
+                    lineHeight: 1.3,
+                    textTransform: "uppercase",
+                    textShadow: "0 2px 16px rgba(0,0,0,0.55)",
+                  }}
+                >
+                  {content.licensedLine2}
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+      ) : (
+        <section
+          style={{
+            position: "relative",
+            minHeight: "88vh",
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr 1fr",
+            backgroundImage: "url('/courtroom-hero.png')",
+            backgroundSize: "cover",
+            backgroundPosition: "center top",
+            overflow: "hidden",
+          }}
+        >
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              background: "rgba(0,0,0,0.25)",
+            }}
+          />
+
+          <div
+            style={{
+              position: "absolute",
+              top: "26px",
+              left: 0,
+              width: "100%",
+              textAlign: "center",
+              zIndex: 2,
+              padding: "0 20px",
+            }}
+          >
+            {isSpanish ? (
+              <>
+                <h1
+                  style={{
+                    margin: 0,
+                    color: "#d4af37",
+                    fontSize: "clamp(2rem, 4vw, 3.4rem)",
+                    lineHeight: 1.02,
+                    textShadow: "0 4px 22px rgba(0,0,0,0.45)",
+                    letterSpacing: "0.02em",
+                  }}
+                >
+                  {content.heroTopLine1}
+                </h1>
+                <h1
+                  style={{
+                    margin: "4px 0 0 0",
+                    color: "#d4af37",
+                    fontSize: "clamp(3.2rem, 6.8vw, 5.8rem)",
+                    lineHeight: 1.02,
+                    textShadow: "0 4px 22px rgba(0,0,0,0.45)",
+                    letterSpacing: "0.02em",
+                  }}
+                >
+                  {content.heroTopLine2}
+                </h1>
+              </>
+            ) : (
               <h1
                 style={{
-                  margin: "4px 0 0 0",
+                  margin: 0,
                   color: "#d4af37",
                   fontSize: "clamp(3.2rem, 6.8vw, 5.8rem)",
                   lineHeight: 1.02,
@@ -275,178 +476,165 @@ export default function Home() {
                   letterSpacing: "0.02em",
                 }}
               >
+                {content.heroTopLine1}
+                <br />
                 {content.heroTopLine2}
               </h1>
-            </>
-          ) : (
-            <h1
-              style={{
-                margin: 0,
-                color: "#d4af37",
-                fontSize: "clamp(3.2rem, 6.8vw, 5.8rem)",
-                lineHeight: 1.02,
-                textShadow: "0 4px 22px rgba(0,0,0,0.45)",
-                letterSpacing: "0.02em",
-              }}
-            >
-              {content.heroTopLine1}
-              <br />
-              {content.heroTopLine2}
-            </h1>
-          )}
-        </div>
+            )}
+          </div>
 
-        <div
-          style={{
-            position: "relative",
-            zIndex: 2,
-            alignSelf: "end",
-            justifySelf: "center",
-            textAlign: "center",
-            paddingLeft: "18px",
-            paddingRight: "18px",
-            paddingBottom: "96px",
-            maxWidth: "360px",
-          }}
-        >
-          <p
-            style={{
-              margin: 0,
-              fontSize: "clamp(1.5rem, 2.3vw, 2rem)",
-              fontWeight: 700,
-              color: "#ffffff",
-              textTransform: "uppercase",
-              lineHeight: 1.25,
-              textShadow: "0 2px 16px rgba(0,0,0,0.55)",
-            }}
-          >
-            {content.experience}
-          </p>
-
-          <p
-            style={{
-              marginTop: "12px",
-              fontSize: "clamp(1.35rem, 2vw, 1.75rem)",
-              fontWeight: 700,
-              color: "#d4af37",
-              textTransform: "uppercase",
-              lineHeight: 1.25,
-              textShadow: "0 2px 16px rgba(0,0,0,0.55)",
-            }}
-          >
-            {content.hablaEspanol}
-          </p>
-        </div>
-
-        <div
-          style={{
-            position: "relative",
-            zIndex: 2,
-            alignSelf: "end",
-            justifySelf: "center",
-            textAlign: "center",
-            paddingBottom: "96px",
-            paddingLeft: "16px",
-            paddingRight: "16px",
-          }}
-        >
-          <h2
-            style={{
-              margin: 0,
-              color: "#ffffff",
-              fontSize: "clamp(2.8rem, 5vw, 4.2rem)",
-              lineHeight: 1.04,
-              textShadow: "0 4px 22px rgba(0,0,0,0.45)",
-              letterSpacing: "0.04em",
-            }}
-          >
-            {content.heroCenterLine}
-          </h2>
-
-          <a
-            href={`tel:${content.phoneHref}`}
-            style={{
-              display: "block",
-              marginTop: "24px",
-              color: "#d4af37",
-              textDecoration: "none",
-              fontSize: "clamp(2.1rem, 4.2vw, 3.1rem)",
-              fontWeight: 700,
-              textShadow: "0 2px 16px rgba(0,0,0,0.55)",
-            }}
-          >
-            {content.phoneDisplay}
-          </a>
-
-          <a
-            href="#contact"
-            style={{
-              display: "inline-block",
-              marginTop: "18px",
-              background: "#d4af37",
-              color: "#111",
-              textDecoration: "none",
-              fontWeight: 700,
-              fontSize: "clamp(1.4rem, 2.8vw, 2rem)",
-              padding: "14px 28px",
-              borderRadius: "8px",
-              lineHeight: 1.1,
-            }}
-          >
-            {content.consultButton}
-          </a>
-        </div>
-
-        <div
-          style={{
-            position: "relative",
-            zIndex: 2,
-            alignSelf: "end",
-            justifySelf: "center",
-            textAlign: "center",
-            paddingLeft: "18px",
-            paddingRight: "18px",
-            paddingBottom: "96px",
-            maxWidth: "420px",
-          }}
-        >
           <div
             style={{
-              display: "inline-block",
+              position: "relative",
+              zIndex: 2,
+              alignSelf: "end",
+              justifySelf: "center",
               textAlign: "center",
+              paddingLeft: "18px",
+              paddingRight: "18px",
+              paddingBottom: "96px",
+              maxWidth: "360px",
             }}
           >
             <p
               style={{
                 margin: 0,
-                fontSize: "clamp(1.45rem, 2.2vw, 1.95rem)",
+                fontSize: "clamp(1.5rem, 2.3vw, 2rem)",
                 fontWeight: 700,
                 color: "#ffffff",
-                lineHeight: 1.25,
                 textTransform: "uppercase",
+                lineHeight: 1.25,
                 textShadow: "0 2px 16px rgba(0,0,0,0.55)",
-                whiteSpace: "nowrap",
               }}
             >
-              {content.licensedLine1}
+              {content.experience}
             </p>
+
             <p
               style={{
-                margin: "4px 0 0 0",
-                fontSize: "clamp(1.45rem, 2.2vw, 1.95rem)",
+                marginTop: "12px",
+                fontSize: "clamp(1.35rem, 2vw, 1.75rem)",
                 fontWeight: 700,
-                color: "#ffffff",
-                lineHeight: 1.25,
+                color: "#d4af37",
                 textTransform: "uppercase",
+                lineHeight: 1.25,
                 textShadow: "0 2px 16px rgba(0,0,0,0.55)",
-                whiteSpace: "nowrap",
               }}
             >
-              {content.licensedLine2}
+              {content.hablaEspanol}
             </p>
           </div>
-        </div>
-      </section>
+
+          <div
+            style={{
+              position: "relative",
+              zIndex: 2,
+              alignSelf: "end",
+              justifySelf: "center",
+              textAlign: "center",
+              paddingBottom: "96px",
+              paddingLeft: "16px",
+              paddingRight: "16px",
+            }}
+          >
+            <h2
+              style={{
+                margin: 0,
+                color: "#ffffff",
+                fontSize: "clamp(2.8rem, 5vw, 4.2rem)",
+                lineHeight: 1.04,
+                textShadow: "0 4px 22px rgba(0,0,0,0.45)",
+                letterSpacing: "0.04em",
+              }}
+            >
+              {content.heroCenterLine}
+            </h2>
+
+            <a
+              href={`tel:${content.phoneHref}`}
+              style={{
+                display: "block",
+                marginTop: "24px",
+                color: "#d4af37",
+                textDecoration: "none",
+                fontSize: "clamp(2.1rem, 4.2vw, 3.1rem)",
+                fontWeight: 700,
+                textShadow: "0 2px 16px rgba(0,0,0,0.55)",
+              }}
+            >
+              {content.phoneDisplay}
+            </a>
+
+            <a
+              href="#contact"
+              style={{
+                display: "inline-block",
+                marginTop: "18px",
+                background: "#d4af37",
+                color: "#111",
+                textDecoration: "none",
+                fontWeight: 700,
+                fontSize: "clamp(1.4rem, 2.8vw, 2rem)",
+                padding: "14px 28px",
+                borderRadius: "8px",
+                lineHeight: 1.1,
+              }}
+            >
+              {content.consultButton}
+            </a>
+          </div>
+
+          <div
+            style={{
+              position: "relative",
+              zIndex: 2,
+              alignSelf: "end",
+              justifySelf: "center",
+              textAlign: "center",
+              paddingLeft: "18px",
+              paddingRight: "18px",
+              paddingBottom: "96px",
+              maxWidth: "420px",
+            }}
+          >
+            <div
+              style={{
+                display: "inline-block",
+                textAlign: "center",
+              }}
+            >
+              <p
+                style={{
+                  margin: 0,
+                  fontSize: "clamp(1.45rem, 2.2vw, 1.95rem)",
+                  fontWeight: 700,
+                  color: "#ffffff",
+                  lineHeight: 1.25,
+                  textTransform: "uppercase",
+                  textShadow: "0 2px 16px rgba(0,0,0,0.55)",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {content.licensedLine1}
+              </p>
+              <p
+                style={{
+                  margin: "4px 0 0 0",
+                  fontSize: "clamp(1.45rem, 2.2vw, 1.95rem)",
+                  fontWeight: 700,
+                  color: "#ffffff",
+                  lineHeight: 1.25,
+                  textTransform: "uppercase",
+                  textShadow: "0 2px 16px rgba(0,0,0,0.55)",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {content.licensedLine2}
+              </p>
+            </div>
+          </div>
+        </section>
+      )}
 
       <section
         id="services"
@@ -487,7 +675,9 @@ export default function Home() {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(2, minmax(280px, 1fr))",
+              gridTemplateColumns: isMobile
+                ? "1fr"
+                : "repeat(2, minmax(280px, 1fr))",
               gap: "28px",
             }}
           >
@@ -504,13 +694,14 @@ export default function Home() {
                   background: "linear-gradient(180deg, #151515, #101010)",
                   border: "1px solid rgba(212, 175, 55, 0.14)",
                   borderRadius: "18px",
-                  padding: "28px",
+                  padding: isMobile ? "22px" : "28px",
                   boxShadow: "0 10px 30px rgba(0, 0, 0, 0.28)",
+                  flexDirection: isMobile ? "column" : "row",
                 }}
               >
                 <div
                   style={{
-                    flex: "0 0 78px",
+                    flex: isMobile ? "0 0 auto" : "0 0 78px",
                     width: "78px",
                     height: "78px",
                     display: "grid",
@@ -593,8 +784,7 @@ export default function Home() {
               fontSize: "1.8rem",
               marginBottom: "18px",
             }}
-          >
-          </h3>
+          ></h3>
 
           <p
             style={{
@@ -716,6 +906,7 @@ export default function Home() {
                 minHeight: "150px",
               }}
             />
+
             <button
               type="button"
               disabled
