@@ -6,6 +6,8 @@ import { ChangeEvent, FormEvent, useEffect, useMemo, useState } from "react";
 interface FormState {
   name: string;
   email: string;
+  phone: string;
+  caseType: string;
   message: string;
 }
 
@@ -33,6 +35,8 @@ export default function Home() {
   const [form, setForm] = useState<FormState>({
     name: "",
     email: "",
+    phone: "",
+    caseType: "",
     message: "",
   });
 
@@ -148,6 +152,8 @@ export default function Home() {
       hablaEspanol: "HABLAMOS ESPAÑOL",
       phoneDisplay: "(301) 900-1234",
       phoneHref: "13019001234",
+      textFaxDisplay: "(301) 615-0123",
+      textFaxHref: "13016150123",
 
       servicesTitle: isSpanish ? "Áreas de Práctica" : "Practice Areas",
       servicesIntro: isSpanish
@@ -169,10 +175,36 @@ export default function Home() {
       contactTitle: isSpanish ? "Contáctenos" : "Contact Us",
       namePlaceholder: isSpanish ? "Su Nombre" : "Your Name",
       emailPlaceholder: isSpanish ? "Su Correo Electrónico" : "Your Email",
+      phonePlaceholder: isSpanish ? "Su Número de Teléfono" : "Your Phone Number",
+      caseTypeLabel: isSpanish ? "Tipo de Caso" : "Type of Case",
+      caseTypePlaceholder: isSpanish ? "Seleccione su tipo de caso" : "Select your case type",
+      caseTypeOptions: isSpanish
+        ? [
+            "Accidente de Auto",
+            "Accidente de Trabajo",
+            "Criminal",
+            "Tránsito",
+            "Divorcio / Custodia",
+            "Violencia Doméstica",
+            "Otro",
+          ]
+        : [
+            "Auto Accident",
+            "Work Accident",
+            "Criminal",
+            "Traffic",
+            "Divorce / Child Custody",
+            "Domestic Violence",
+            "Other",
+          ],
       messagePlaceholder: isSpanish
         ? "¿Cómo podemos ayudarle?"
         : "How can we help you?",
       sendMessage: isSpanish ? "Enviar Mensaje" : "Send Message",
+      callButton: isSpanish ? "Llámenos al (301) 900-1234" : "Call (301) 900-1234",
+      textFaxButton: isSpanish
+        ? "Texto/Fax al (301) 615-0123"
+        : "Text/Fax Us (301) 615-0123",
 
       locationsTitle: isSpanish ? "Ubicaciones de Oficinas" : "Office Locations",
       officeLocations,
@@ -180,7 +212,7 @@ export default function Home() {
   }, [isSpanish]);
 
   const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
 
@@ -199,7 +231,11 @@ export default function Home() {
     const body = encodeURIComponent(
       `${isSpanish ? "Nombre" : "Name"}: ${form.name}\n${
         isSpanish ? "Correo Electrónico" : "Email"
-      }: ${form.email}\n\n${isSpanish ? "Mensaje" : "Message"}:\n${form.message}`
+      }: ${form.email}\n${
+        isSpanish ? "Número de Teléfono" : "Phone Number"
+      }: ${form.phone}\n${
+        isSpanish ? "Tipo de Caso" : "Type of Case"
+      }: ${form.caseType}\n\n${isSpanish ? "Mensaje" : "Message"}:\n${form.message}`
     );
 
     window.location.href = `mailto:info@luisleonlaw.com?subject=${subject}&body=${body}`;
@@ -821,113 +857,6 @@ export default function Home() {
       </section>
 
       <section
-        id="contact"
-        style={{
-          padding: "88px 20px",
-        }}
-      >
-        <div
-          style={{
-            maxWidth: "760px",
-            margin: "0 auto",
-            textAlign: "center",
-          }}
-        >
-          <h2
-            style={{
-              margin: "0 0 18px",
-              fontSize: "clamp(2rem, 4vw, 3.2rem)",
-              color: "#d4af37",
-              textAlign: "center",
-            }}
-          >
-            {content.contactTitle}
-          </h2>
-
-          <form
-            onSubmit={handleSubmit}
-            style={{
-              marginTop: "24px",
-              display: "grid",
-              gap: "14px",
-            }}
-          >
-            <input
-              name="name"
-              placeholder={content.namePlaceholder}
-              value={form.name}
-              onChange={handleChange}
-              required
-              style={{
-                width: "100%",
-                background: "#161616",
-                color: "#f5f1e8",
-                border: "1px solid rgba(212, 175, 55, 0.16)",
-                borderRadius: "10px",
-                padding: "14px 16px",
-                font: "inherit",
-              }}
-            />
-
-            <input
-              name="email"
-              type="email"
-              placeholder={content.emailPlaceholder}
-              value={form.email}
-              onChange={handleChange}
-              required
-              style={{
-                width: "100%",
-                background: "#161616",
-                color: "#f5f1e8",
-                border: "1px solid rgba(212, 175, 55, 0.16)",
-                borderRadius: "10px",
-                padding: "14px 16px",
-                font: "inherit",
-              }}
-            />
-
-            <textarea
-              name="message"
-              placeholder={content.messagePlaceholder}
-              rows={6}
-              value={form.message}
-              onChange={handleChange}
-              required
-              style={{
-                width: "100%",
-                background: "#161616",
-                color: "#f5f1e8",
-                border: "1px solid rgba(212, 175, 55, 0.16)",
-                borderRadius: "10px",
-                padding: "14px 16px",
-                font: "inherit",
-                resize: "vertical",
-                minHeight: "150px",
-              }}
-            />
-
-            <button
-              type="button"
-              disabled
-              style={{
-                background: "#d4af37",
-                color: "#111",
-                border: "none",
-                fontWeight: 700,
-                padding: "12px 20px",
-                borderRadius: "8px",
-                cursor: "not-allowed",
-                opacity: 0.7,
-              }}
-            >
-              {content.sendMessage}
-            </button>
-          </form>
-        </div>
-      </section>
-
-      <section
         id="locations"
         style={{
           padding: "88px 20px 96px",
@@ -1036,6 +965,187 @@ export default function Home() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section
+        id="contact"
+        style={{
+          padding: "88px 20px",
+        }}
+      >
+        <div
+          style={{
+            maxWidth: "760px",
+            margin: "0 auto",
+            textAlign: "center",
+          }}
+        >
+          <h2
+            style={{
+              margin: "0 0 18px",
+              fontSize: "clamp(2rem, 4vw, 3.2rem)",
+              color: "#d4af37",
+              textAlign: "center",
+            }}
+          >
+            {content.contactTitle}
+          </h2>
+
+          <form
+            onSubmit={handleSubmit}
+            style={{
+              marginTop: "24px",
+              display: "grid",
+              gap: "14px",
+            }}
+          >
+            <input
+              name="name"
+              placeholder={content.namePlaceholder}
+              value={form.name}
+              onChange={handleChange}
+              required
+              style={{
+                width: "100%",
+                background: "#161616",
+                color: "#f5f1e8",
+                border: "1px solid rgba(212, 175, 55, 0.16)",
+                borderRadius: "10px",
+                padding: "14px 16px",
+                font: "inherit",
+              }}
+            />
+
+            <input
+              name="email"
+              type="email"
+              placeholder={content.emailPlaceholder}
+              value={form.email}
+              onChange={handleChange}
+              required
+              style={{
+                width: "100%",
+                background: "#161616",
+                color: "#f5f1e8",
+                border: "1px solid rgba(212, 175, 55, 0.16)",
+                borderRadius: "10px",
+                padding: "14px 16px",
+                font: "inherit",
+              }}
+            />
+
+            <input
+              name="phone"
+              type="tel"
+              placeholder={content.phonePlaceholder}
+              value={form.phone}
+              onChange={handleChange}
+              required
+              style={{
+                width: "100%",
+                background: "#161616",
+                color: "#f5f1e8",
+                border: "1px solid rgba(212, 175, 55, 0.16)",
+                borderRadius: "10px",
+                padding: "14px 16px",
+                font: "inherit",
+              }}
+            />
+
+            <select
+              name="caseType"
+              value={form.caseType}
+              onChange={handleChange}
+              required
+              style={{
+                width: "100%",
+                background: "#161616",
+                color: "#f5f1e8",
+                border: "1px solid rgba(212, 175, 55, 0.16)",
+                borderRadius: "10px",
+                padding: "14px 16px",
+                font: "inherit",
+              }}
+            >
+              <option value="" disabled>
+                {content.caseTypePlaceholder}
+              </option>
+              {content.caseTypeOptions.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+
+            <textarea
+              name="message"
+              placeholder={content.messagePlaceholder}
+              rows={6}
+              value={form.message}
+              onChange={handleChange}
+              required
+              style={{
+                width: "100%",
+                background: "#161616",
+                color: "#f5f1e8",
+                border: "1px solid rgba(212, 175, 55, 0.16)",
+                borderRadius: "10px",
+                padding: "14px 16px",
+                font: "inherit",
+                resize: "vertical",
+                minHeight: "150px",
+              }}
+            />
+
+            <button
+              type="submit"
+              style={{
+                background: "#d4af37",
+                color: "#111",
+                border: "none",
+                fontWeight: 700,
+                padding: "12px 20px",
+                borderRadius: "8px",
+                cursor: "pointer",
+              }}
+            >
+              {content.sendMessage}
+            </button>
+
+            <a
+              href={`tel:${content.phoneHref}`}
+              style={{
+                display: "block",
+                background: "#d4af37",
+                color: "#111",
+                textDecoration: "none",
+                fontWeight: 700,
+                padding: "12px 20px",
+                borderRadius: "8px",
+                textAlign: "center",
+              }}
+            >
+              {content.callButton}
+            </a>
+
+            <a
+              href={`sms:${content.textFaxHref}`}
+              style={{
+                display: "block",
+                background: "transparent",
+                color: "#d4af37",
+                textDecoration: "none",
+                fontWeight: 700,
+                padding: "12px 20px",
+                borderRadius: "8px",
+                textAlign: "center",
+                border: "1px solid #d4af37",
+              }}
+            >
+              {content.textFaxButton}
+            </a>
+          </form>
         </div>
       </section>
     </main>
