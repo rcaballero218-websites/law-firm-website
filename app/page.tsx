@@ -1148,6 +1148,179 @@ export default function Home() {
           </form>
         </div>
       </section>
+      
+      <section
+        style={{
+          padding: "28px 20px 36px",
+          background: "#0b0b0b",
+          borderTop: "1px solid rgba(212, 175, 55, 0.12)",
+        }}
+      >
+        <div
+          style={{
+            maxWidth: "1180px",
+            margin: "0 auto",
+            textAlign: "center",
+          }}
+        >
+          <p
+            style={{
+              margin: "0 0 16px",
+              color: "#d4af37",
+              fontSize: "1rem",
+              fontWeight: 700,
+              letterSpacing: "0.08em",
+              textTransform: "uppercase",
+            }}
+          >
+            {isSpanish ? "Síganos" : "Follow Us"}
+          </p>
+
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: isMobile ? "14px" : "18px",
+              flexWrap: "wrap",
+            }}
+          >
+            <a
+              href="https://www.facebook.com/abogadoluisleon"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Facebook"
+              title="Facebook"
+              style={{
+                width: "54px",
+                height: "54px",
+                borderRadius: "999px",
+                border: "1px solid rgba(212, 175, 55, 0.28)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                textDecoration: "none",
+                color: "#f5f1e8",
+                background: "#151515",
+                fontSize: "1.5rem",
+                fontWeight: 700,
+              }}
+            >
+              f
+            </a>
+
+            <a
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram"
+              title="Instagram"
+              style={{
+                width: "54px",
+                height: "54px",
+                borderRadius: "16px",
+                border: "1px solid rgba(212, 175, 55, 0.28)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                textDecoration: "none",
+                color: "#f5f1e8",
+                background: "#151515",
+                position: "relative",
+              }}
+            >
+              <span
+                style={{
+                  width: "22px",
+                  height: "22px",
+                  border: "2px solid #f5f1e8",
+                  borderRadius: "7px",
+                  display: "block",
+                  position: "relative",
+                }}
+              >
+                <span
+                  style={{
+                    width: "8px",
+                    height: "8px",
+                    border: "2px solid #f5f1e8",
+                    borderRadius: "999px",
+                    position: "absolute",
+                    top: "4px",
+                    left: "4px",
+                  }}
+                />
+                <span
+                  style={{
+                    width: "4px",
+                    height: "4px",
+                    background: "#f5f1e8",
+                    borderRadius: "999px",
+                    position: "absolute",
+                    top: "3px",
+                    right: "3px",
+                  }}
+                />
+              </span>
+            </a>
+
+            <a
+              href="https://www.youtube.com/@LuisLeon-r8o9m"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="YouTube"
+              title="YouTube"
+              style={{
+                width: "60px",
+                height: "42px",
+                borderRadius: "12px",
+                border: "1px solid rgba(212, 175, 55, 0.28)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                textDecoration: "none",
+                color: "#f5f1e8",
+                background: "#151515",
+              }}
+            >
+              <span
+                style={{
+                  width: 0,
+                  height: 0,
+                  borderTop: "9px solid transparent",
+                  borderBottom: "9px solid transparent",
+                  borderLeft: "16px solid #f5f1e8",
+                  marginLeft: "4px",
+                }}
+              />
+            </a>
+
+            <a
+              href="https://www.yelp.com/biz/law-office-of-luis-leon-silver-spring?osq=law+office+of+luis+leon&override_cta=Request+a+consultation"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Yelp"
+              title="Yelp"
+              style={{
+                width: "54px",
+                height: "54px",
+                borderRadius: "999px",
+                border: "1px solid rgba(212, 175, 55, 0.28)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                textDecoration: "none",
+                color: "#f5f1e8",
+                background: "#151515",
+                fontSize: "1.15rem",
+                fontWeight: 700,
+              }}
+            >
+              Y
+            </a>
+          </div>
+        </div>
+      </section>
     </main>
   );
 }
