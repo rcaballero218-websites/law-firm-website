@@ -1,6 +1,7 @@
 "use client";
 
 import Navbar from "./components/Navbar";
+import Script from "next/script";
 import { ChangeEvent, FormEvent, useEffect, useMemo, useState } from "react";
 
 interface FormState {
@@ -32,11 +33,24 @@ interface OfficeLocation {
 export default function Home() {
   const [isMobile, setIsMobile] = useState(false);
   const [isSpanish, setIsSpanish] = useState<boolean>(false);
+
   const [form, setForm] = useState<FormState>({
     name: "",
     email: "",
     phone: "",
     caseType: "",
+    message: "",
+  });
+
+  const [turnstileToken, setTurnstileToken] = useState("");
+  const [startedAt, setStartedAt] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const [submitStatus, setSubmitStatus] = useState<{
+    type: "idle" | "success" | "error";
+    message: string;
+  }>({
+    type: "idle",
     message: "",
   });
 
@@ -46,6 +60,37 @@ export default function Home() {
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
+
+  useEffect(() => {
+  setStartedAt(Date.now());
+
+  (
+    window as Window & {
+      onTurnstileSuccess?: (token: string) => void;
+      onTurnstileExpired?: () => void;
+    }
+  ).onTurnstileSuccess = (token: string) => {
+    setTurnstileToken(token);
+  };
+
+  (
+    window as Window & {
+      onTurnstileSuccess?: (token: string) => void;
+      onTurnstileExpired?: () => void;
+    }
+  ).onTurnstileExpired = () => {
+    setTurnstileToken("");
+  };
+
+  return () => {
+    delete (
+      window as Window & { onTurnstileSuccess?: (token: string) => void }
+    ).onTurnstileSuccess;
+    delete (
+      window as Window & { onTurnstileExpired?: () => void }
+    ).onTurnstileExpired;
+  };
+}, []);
 
   const content = useMemo(() => {
     const serviceCards: ServiceCard[] = isSpanish
@@ -222,23 +267,57 @@ export default function Home() {
     }));
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus({ type: "idle", message: "" });
 
-    const subject = encodeURIComponent(
-      isSpanish ? "Nueva Solicitud de Consulta" : "New Consultation Request"
-    );
-    const body = encodeURIComponent(
-      `${isSpanish ? "Nombre" : "Name"}: ${form.name}\n${
-        isSpanish ? "Correo Electrónico" : "Email"
-      }: ${form.email}\n${
-        isSpanish ? "Número de Teléfono" : "Phone Number"
-      }: ${form.phone}\n${
-        isSpanish ? "Tipo de Caso" : "Type of Case"
-      }: ${form.caseType}\n\n${isSpanish ? "Mensaje" : "Message"}:\n${form.message}`
-    );
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...form,
+          website: "",
+          startedAt,
+          turnstileToken,
+        }),
+      });
 
-    window.location.href = `mailto:info@luisleonlaw.com?subject=${subject}&body=${body}`;
+      const data = await res.json();
+
+      if (!res.ok || !data.ok) {
+        throw new Error(data.error || "Unable to send message.");
+      }
+
+      setSubmitStatus({
+        type: "success",
+        message: isSpanish
+          ? "Su mensaje fue enviado correctamente."
+          : "Your message was sent successfully.",
+      });
+
+      setForm({
+        name: "",
+        email: "",
+        phone: "",
+        caseType: "",
+        message: "",
+      });
+      setTurnstileToken("");
+      setStartedAt(Date.now());
+    } catch (error) {
+      setSubmitStatus({
+        type: "error",
+        message: isSpanish
+          ? "No se pudo enviar el mensaje. Inténtelo otra vez."
+          : "Your message could not be sent. Please try again.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -250,6 +329,11 @@ export default function Home() {
         fontFamily: 'Georgia, "Times New Roman", serif',
       }}
     >
+      <Script
+        src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+        async
+        defer
+      />
       <Navbar
         isSpanish={isSpanish}
         onToggleLanguage={() => setIsSpanish((prev) => !prev)}
@@ -1001,6 +1085,13 @@ export default function Home() {
             }}
           >
             <input
+              type="text"
+              name="website"
+              autoComplete="off"
+              tabIndex={-1}
+              style={{ display: "none" }}
+            />
+            <input
               name="name"
               placeholder={content.namePlaceholder}
               value={form.name}
@@ -1098,8 +1189,18 @@ export default function Home() {
               }}
             />
 
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <div
+                className="cf-turnstile"
+                data-sitekey={String(process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY)}
+                data-callback="onTurnstileSuccess"
+                data-expired-callback="onTurnstileExpired"
+              />
+            </div>
+
             <button
               type="submit"
+              disabled={isSubmitting || !turnstileToken}
               style={{
                 background: "#d4af37",
                 color: "#111",
@@ -1107,11 +1208,29 @@ export default function Home() {
                 fontWeight: 700,
                 padding: "12px 20px",
                 borderRadius: "8px",
-                cursor: "pointer",
+                cursor: isSubmitting || !turnstileToken ? "not-allowed" : "pointer",
+                opacity: isSubmitting || !turnstileToken ? 0.7 : 1,
               }}
             >
-              {content.sendMessage}
+              {isSubmitting
+                ? isSpanish
+                  ? "Enviando..."
+                  : "Sending..."
+                : content.sendMessage}
             </button>
+
+            {submitStatus.type !== "idle" && (
+              <p
+                style={{
+                  marginTop: "8px",
+                  color: submitStatus.type === "success" ? "#d4af37" : "#ffb3b3",
+                  textAlign: "center",
+                  lineHeight: 1.5,
+                }}
+              >
+                {submitStatus.message}
+              </p>
+            )}
 
             <a
               href={`tel:${content.phoneHref}`}
@@ -1148,7 +1267,7 @@ export default function Home() {
           </form>
         </div>
       </section>
-      
+
       <section
         style={{
           padding: "28px 20px 36px",
